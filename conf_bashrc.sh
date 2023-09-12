@@ -111,8 +111,10 @@ fi # Fim da condição if
 
 ## Habilitando suporte a cores para o ls e outros aliases
 ## Vê se o arquivo existe
-if [ -x /usr/bin/dircolors ]; then
+if [ -x /usr/bin/dircolors ]
+then
 test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+fi
 
 ## Aliases (apelidos) para comandos
 alias ls='ls --color=auto'
