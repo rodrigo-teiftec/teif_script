@@ -12,7 +12,7 @@ then
 fi
 
 echo "Alterando bashrc ..."
-cat <<FIM
+cat <<FIM > /root/.bashrc
 # *********************************************
 # * ~/.bashrc Personalizado Teiftec             *
 # *                                             *
@@ -122,7 +122,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 fi # Fim do if do dircolor
 
-FIM > /root/.bashrc
+FIM
 
 #Copiando o .bashrc para a pasta home de todos os usuários
 cp /root/.bashrc /home/*/
