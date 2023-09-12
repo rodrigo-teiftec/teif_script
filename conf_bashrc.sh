@@ -133,7 +133,7 @@ cp /root/.bashrc /home/*/
 read -p "Digite o nome da máquina: " hostname_vm
 read -p "Digite o dominio do provedor": dominio
 
-hostnamectl set-hosname $hostname_vm.$dominio
+hostnamectl set-hostname $hostname_vm.$dominio
 
 echo "Ajuste finalizado. Deslogue e logue novamente no terminal"
 
