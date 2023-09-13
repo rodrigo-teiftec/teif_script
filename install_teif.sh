@@ -35,14 +35,14 @@ apt-get install ca-certificates curl gnupg lsb-release -y 2>&1 > /dev/null
 cod_retorno="$?"
 kill $!
 
-fn_test_cmd $cod_retorno $msg
+fn_test_cmd "$cod_retorno" "$msg"
 
 curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/share/keyrings/nlnetlabs-archive-keyring.gpg
-fn_test_cmd $? $msg
+fn_test_cmd "$?" "$msg"
 
 #Adicionando repositorio krill
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nlnetlabs-archive-keyring.gpg] https://packages.nlnetlabs.nl/linux/debian $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/nlnetlabs.list > /dev/null
-fn_test_cmd $? $msg
+fn_test_cmd "$?" "$msg"
 
 #echo 'deb [arch=amd64] https://packages.nlnetlabs.nl/linux/debian/ bullseye main' >  /etc/apt/sources.list.d/nlnetlabs.list
 
