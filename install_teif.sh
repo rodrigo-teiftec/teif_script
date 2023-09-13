@@ -27,7 +27,7 @@ fi
 
 #Instalando os pacotes
 msg="Instalando dependências"
-fn_create_blinking_progress "$msg"
+fn_create_blinking_progress "$msg" &
 
 apt-get update -qq 2>&-
 apt-get install wget gnupg2 apt-transport-https net-tools -qq 2>&-
