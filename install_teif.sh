@@ -4,7 +4,10 @@
 #Objetivo desse script é automatizar a instalação do rpki
 #
 
+#Fazendo o import do arquivo de funções
 source ./funcoes.sh
+
+#Declarando as variáveis globais
 
 #Verificando se o usuário logado é root
 if [ $(id -u) -gt 0 ]
@@ -36,20 +39,18 @@ cod_retorno="$?"
 kill $!
 
 fn_test_cmd "$cod_retorno" "$msg"
-
+fn_print_msg "$cod_retorno" "$msg"
 curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/share/keyrings/nlnetlabs-archive-keyring.gpg
-fn_test_cmd "$?" "$msg"
+
+fn_test_cmd "$?" "Falha ao baixar a chave gpg"
 
 #Adicionando repositorio krill
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nlnetlabs-archive-keyring.gpg] https://packages.nlnetlabs.nl/linux/debian $(lsb_release -cs) main" > /etc/apt/sources.list.d/nlnetlabs.list
-fn_test_cmd "$?" "$msg"
 
-#echo 'deb [arch=amd64] https://packages.nlnetlabs.nl/linux/debian/ bullseye main' >  /etc/apt/sources.list.d/nlnetlabs.list
-
-
-#wget -qO- https://packages.nlnetlabs.nl/aptkey.asc | apt-key add -
+fn_test_cmd "$?" "Falha ao configurar o repositorio krill"
 
 #Instalando o pacote do krill
+msg="Instalando o krill"
 apt-get update -y 2>&1 > /dev/null
 fn_test_cmd $? $msg
 
@@ -60,8 +61,8 @@ cp /etc/krill.conf /etc/krill.conf.orig
 
 echo "ip = \"0.0.0.0\"" >> /etc/krill.conf
 
-systemctl enable krill
-systemctl start krill 
+systemctl enable krill 2>&-
+systemctl start krill 2>&-
 
 #Buscando a chave de acesso ao painel web
 token=$(grep "token =" /etc/krill.conf | cut -d'"' -s -f 2)
