@@ -3,7 +3,6 @@
 #
 #Objetivo desse script é automatizar a instalação do rpki
 #
-#
 
 #Verificando se o usuário logado é root
 if [ $(id -u) -gt 0 ]
