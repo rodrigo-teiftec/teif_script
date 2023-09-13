@@ -74,7 +74,7 @@ ip=$(grep address /etc/network/interfaces | cut -d" " -f 2)
 
 fn_print_msg "0" "Instalação concluída com sucesso"
 echo
-echo "Acesse o krill através do navegador: https://${ip%/*}:3000"
+echo "Acesse: https://${ip%/*}:3000"
 echo "Utilize a senha: $token"
 
 
