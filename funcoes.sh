@@ -24,6 +24,6 @@ fn_create_blinking_progress() {
 
 #Função para validar a saída dos comandos
 fn_test_cmd() {
-  [[ $1 -eq 0 ]] || fn_print_msg "$1" "$2" && exit
+  [[ $1 -eq 0 ]] || (fn_print_msg "$1" "$2" && exit)
 }
 
