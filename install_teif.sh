@@ -29,8 +29,8 @@ fi
 msg="Instalando dependências"
 fn_create_blinking_progress "$msg" &
 
-apt-get update 2>&1 > /dev/null
-apt-get install ca-certificates curl gnupg lsb-release 2>&1 > /dev/null
+apt-get update -y 2>&1 > /dev/null
+apt-get install ca-certificates curl gnupg lsb-release -y 2>&1 > /dev/null
 
 cod_retorno="$?"
 kill $!
@@ -50,7 +50,7 @@ fn_test_cmd $? $msg
 #wget -qO- https://packages.nlnetlabs.nl/aptkey.asc | apt-key add -
 
 #Instalando o pacote do krill
-apt-get update 2>&1 > /dev/null
+apt-get update -y 2>&1 > /dev/null
 fn_test_cmd $? $msg
 
 echo "Passou"
