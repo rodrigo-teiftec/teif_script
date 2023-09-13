@@ -21,9 +21,9 @@ fi
 #+esse script é compatível apenas com a versão 11 até o momento.
 if [ $(grep CODENAME /etc/os-release | cut -d"=" -f2) == "bullseye" ]
 then
-  fn_print_msg 0 "Verificando versão ..."
+  fn_print_msg 0 "Verificando versão"
 else
-  fn_print_msg 1 "Verificando versão ..."
+  fn_print_msg 1 "Verificando versão"
   echo "Cancelando instalação!!!"
   exit
 fi
@@ -51,6 +51,7 @@ fn_test_cmd "$?" "Falha ao configurar o repositorio krill"
 
 #Instalando o pacote do krill
 msg="Instalando o krill"
+fn_create_blinking_progress "$msg" &
 apt-get update -y 2>&1 > /dev/null
 fn_test_cmd $? $msg
 
@@ -63,6 +64,9 @@ echo "ip = \"0.0.0.0\"" >> /etc/krill.conf
 
 systemctl enable krill 2>&-
 systemctl start krill 2>&-
+
+kill $!
+fn_print_msg "$cod_retorno" "$msg"
 
 #Buscando a chave de acesso ao painel web
 token=$(grep "token =" /etc/krill.conf | cut -d'"' -s -f 2)
