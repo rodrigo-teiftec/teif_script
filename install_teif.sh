@@ -53,9 +53,8 @@ fn_test_cmd "$?" "$msg"
 apt-get update -y 2>&1 > /dev/null
 fn_test_cmd $? $msg
 
-echo "Passou"
-exit
-apt install krill krill-sync krillup krillta
+apt-get install krill krill-sync krillup krillta -y 2>&1 > /dev/null
+fn_test_cmd $? $msg
 
 cp /etc/krill.conf /etc/krill.conf.orig
 
