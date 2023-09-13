@@ -30,7 +30,7 @@ msg="Instalando dependências"
 fn_create_blinking_progress "$msg" &
 
 apt-get update 2>&1 > /dev/null
-apt-get install ca-certificates curl gnupg lsb-release
+apt-get install ca-certificates curl gnupg lsb-release 2>&1 > /dev/null
 
 cod_retorno="$?"
 kill $!
