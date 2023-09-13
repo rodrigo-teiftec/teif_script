@@ -30,19 +30,24 @@ msg="Instalando dependências"
 fn_create_blinking_progress "$msg" &
 
 apt-get update 2>&1 > /dev/null
-apt-get install wget gnupg2 apt-transport-https net-tools 2>&1 > /dev/null
+apt-get install ca-certificates curl gnupg lsb-release
 
 cod_retorno="$?"
 kill $!
 
 fn_test_cmd $cod_retorno $msg
 
-#Adicionando repositorio krill
-echo 'deb [arch=amd64] https://packages.nlnetlabs.nl/linux/debian/ bullseye main' >  /etc/apt/sources.list.d/nlnetlabs.list
+curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/share/keyrings/nlnetlabs-archive-keyring.gpg
 fn_test_cmd $? $msg
 
-wget -qO- https://packages.nlnetlabs.nl/aptkey.asc | apt-key add -
+#Adicionando repositorio krill
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nlnetlabs-archive-keyring.gpg] https://packages.nlnetlabs.nl/linux/debian $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/nlnetlabs.list > /dev/null
 fn_test_cmd $? $msg
+
+#echo 'deb [arch=amd64] https://packages.nlnetlabs.nl/linux/debian/ bullseye main' >  /etc/apt/sources.list.d/nlnetlabs.list
+
+
+#wget -qO- https://packages.nlnetlabs.nl/aptkey.asc | apt-key add -
 
 #Instalando o pacote do krill
 apt-get update 2>&1 > /dev/null
