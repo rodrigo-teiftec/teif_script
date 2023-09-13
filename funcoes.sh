@@ -27,5 +27,3 @@ fn_test_cmd() {
   [[ $1 -eq 0 ]] || print_msg "$1" "$2" && exit
 }
 
-kill $!
-
