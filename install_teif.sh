@@ -4,6 +4,8 @@
 #Objetivo desse script é automatizar a instalação do rpki
 #
 
+source ./funcoes.sh
+
 #Verificando se o usuário logado é root
 if [ $(id -u) -gt 0 ]
 then
@@ -16,30 +18,36 @@ fi
 #+esse script é compatível apenas com a versão 11 até o momento.
 if [ $(grep CODENAME /etc/os-release | cut -d"=" -f2) == "bullseye" ]
 then
-  echo -n "Verificando versão ..."
-  tput setaf 2
-  echo "[OK]"
-  tput setaf 9
+  fn_print_msg 0 "Verificando versão ..."
 else
-  echo -n "Verificando versão ..."
-  tput setaf 1
-  echo "[Fail]"
-  tput setaf 9
-  echo "Cancelando instalação ..."
+  fn_print_msg 1 "Verificando versão ..."
+  echo "Cancelando instalação!!!"
   exit
 fi
 
 #Instalando os pacotes
-apt-get update && apt-get install wget gnupg2 apt-transport-https net-tools -y
+msg="Instalando dependências"
+fn_create_blinking_progress "$msg"
+
+apt-get update -qq 2>&-
+apt-get install wget gnupg2 apt-transport-https net-tools -qq 2>&-
+
+cod_retorno="$?"
+kill $!
+
+fn_test_cmd $cod_retorno $msg
 
 #Adicionando repositorio krill
 echo 'deb [arch=amd64] https://packages.nlnetlabs.nl/linux/debian/ bullseye main' >  /etc/apt/sources.list.d/nlnetlabs.list
+fn_test_cmd $? $msg
 
 wget -qO- https://packages.nlnetlabs.nl/aptkey.asc | apt-key add -
-
+fn_test_cmd $? $msg
 
 #Instalando o pacote do krill
-apt update 2>-
+apt-get update -qq 2>&-
+fn_test_cmd $? $msg
+
 apt install krill krill-sync krillup krillta
 
 cp /etc/krill.conf /etc/krill.conf.orig
