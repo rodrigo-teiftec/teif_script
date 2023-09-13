@@ -49,7 +49,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nlnet
 
 fn_test_cmd "$?" "Falha ao configurar o repositorio krill"
 
-#Instalando o pacote do krill
+#Instalando o pacote do krill e ajustando arquivo de configuração
 msg="Instalando o krill"
 fn_create_blinking_progress "$msg" &
 apt-get update -y 2>&1 > /dev/null
@@ -59,7 +59,6 @@ apt-get install krill krill-sync krillup krillta -y 2>&1 > /dev/null
 fn_test_cmd $? $msg
 
 cp /etc/krill.conf /etc/krill.conf.orig
-
 echo "ip = \"0.0.0.0\"" >> /etc/krill.conf
 
 systemctl enable krill 2>&-
@@ -72,6 +71,9 @@ fn_print_msg "$cod_retorno" "$msg"
 token=$(grep "token =" /etc/krill.conf | cut -d'"' -s -f 2)
 
 ip=$(grep address /etc/network/interfaces | cut -d" " -f 2)
+
+fn_print_msg "0" "Instalação concluída com sucesso"
+echo
 echo "Acesse o krill através do navegador: https://${ip%/*}:3000"
 echo "Utilize a senha: $token"
 
